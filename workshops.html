@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRAFTIVIA - Multiplica la Visibilidad de Tus Talleres Creativos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4A4A4A;
+        }
+        .craftivia-gradient-text {
+            background: linear-gradient(90deg, #F59E0B, #EF4444, #8B5CF6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .cta-button {
+            transition: all 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .active-filter {
+            background-color: #8B5CF6 !important;
+            color: white !important;
+            border-color: #8B5CF6 !important;
+        }
+        .phone-frame {
+            border: 8px solid #1f2937;
+            border-radius: 40px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            position: relative;
+        }
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 160px;
+            height: 25px;
+            background-color: #1f2937;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            z-index: 10;
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 250px;
+            width: 250px;
+            max-width: 100%;
+        }
+        .language-button {
+            @apply px-3 py-1 rounded-full text-sm font-medium transition-colors;
+        }
+        .language-button.active {
+            @apply bg-purple-600 text-white;
+        }
+        .language-button:not(.active) {
+            @apply bg-gray-200 text-gray-700 hover:bg-gray-300;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto px-6 py-12 md:py-20 relative">
+        <div class="absolute top-4 right-4 flex space-x-2">
+            <button id="lang-es" class="language-button active" onclick="setLanguage('es')">ES</button>
+            <button id="lang-en" class="language-button" onclick="setLanguage('en')">EN</button>
+        </div>
+
+        <!-- Hero Section -->
+        <section class="text-center">
+            <div class="lang-content es">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">
+                    Conecta tu taller con la <span class="craftivia-gradient-text">comunidad creativa</span> de Barcelona.
+                </h1>
+                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+                    CRAFTIVIA es la nueva plataforma que visibiliza tu estudio de arte o música, atrayendo a alumnos apasionados y listos para descubrirte.
+                </p>
+                <a href="#register" class="cta-button bg-purple-600 text-white font-bold py-3 px-8 rounded-full inline-block text-lg">
+                    Únete a CRAFTIVIA (¡Es gratis!)
+                </a>
+            </div>
+            <div class="lang-content en hidden">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">
+                    Connect your workshop with Barcelona's <span class="craftivia-gradient-text">creative community</span>.
+                </h1>
+                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+                    CRAFTIVIA is the new platform that increases the visibility of your art or music studio, attracting passionate students ready to discover you.
+                </p>
+                <a href="#register" class="cta-button bg-purple-600 text-white font-bold py-3 px-8 rounded-full inline-block text-lg">
+                    Join CRAFTIVIA (It's free!)
+                </a>
+            </div>
+        </section>
+
+        <!-- Interactive App Demo Section -->
+        <section class="mt-16 md:mt-24">
+            <div class="lang-content es">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Explora la experiencia CRAFTIVIA</h2>
+            </div>
+            <div class="lang-content en hidden">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Explore the CRAFTIVIA experience</h2>
+            </div>
+            <div class="flex flex-col lg:flex-row justify-center items-center gap-12">
+                
+                <!-- Phone Mockup -->
+                <div class="w-full max-w-sm mx-auto">
+                    <div class="phone-frame bg-white overflow-hidden">
+                        <div class="phone-notch"></div>
+                        <div class="p-4 pt-8 h-[700px] overflow-y-auto">
+                            <!-- App Header -->
+                            <div class="text-center mb-4">
+                                <h3 class="text-2xl font-bold">CRAFTIVIA</h3>
+                                <p class="text-gray-500">
+                                    <span class="lang-content es">¿Qué vas a crear hoy?</span>
+                                    <span class="lang-content en hidden">What will you create today?</span>
+                                </p>
+                            </div>
+
+                            <!-- Filters -->
+                            <div id="filters" class="flex flex-wrap justify-center gap-2 mb-4 text-sm">
+                                <button data-discipline="Todos" class="filter-btn active-filter border border-gray-300 rounded-full px-4 py-1">
+                                    <span class="lang-content es">Todos</span>
+                                    <span class="lang-content en hidden">All</span>
+                                </button>
+                                <button data-discipline="Cerámica" class="filter-btn border border-gray-300 rounded-full px-4 py-1">
+                                    <span class="lang-content es">Cerámica</span>
+                                    <span class="lang-content en hidden">Ceramics</span>
+                                </button>
+                                <button data-discipline="Pintura" class="filter-btn border border-gray-300 rounded-full px-4 py-1">
+                                    <span class="lang-content es">Pintura</span>
+                                    <span class="lang-content en hidden">Painting</span>
+                                </button>
+                                <button data-discipline="Música" class="filter-btn border border-gray-300 rounded-full px-4 py-1">
+                                    <span class="lang-content es">Música</span>
+                                    <span class="lang-content en hidden">Music</span>
+                                </button>
+                            </div>
+                            
+                            <p id="results-count" class="text-center text-xs text-gray-400 mb-4">
+                                <span class="lang-content es">Mostrando 5 talleres</span>
+                                <span class="lang-content en hidden">Showing 5 workshops</span>
+                            </p>
+
+                            <!-- Workshop List -->
+                            <div id="workshop-list" class="space-y-3">
+                                <!-- Workshop cards will be injected here by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Visualization -->
+                <div class="w-full max-w-md text-center lg:text-left">
+                    <div class="lang-content es">
+                        <h3 class="text-2xl font-bold mb-4">Visibilidad Basada en Datos</h3>
+                        <p class="text-gray-600 mb-6">La plataforma no solo lista talleres, también ofrece una visión clara de la oferta creativa. La interactividad permite a los usuarios encontrar exactamente lo que buscan, filtrando por disciplina, ubicación u horarios, aumentando la probabilidad de que descubran y se interesen por tu estudio. (Imagen referencial)</p>
+                    </div>
+                    <div class="lang-content en hidden">
+                        <h3 class="text-2xl font-bold mb-4">Data-Driven Visibility</h3>
+                        <p class="text-gray-600 mb-6">The platform not only lists workshops but also offers a clear view of the creative offerings. Interactivity allows users to find exactly what they're looking for, filtering by discipline, location, or schedules, increasing the likelihood that they discover and become interested in your studio. (Reference image)</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="disciplineChart"></canvas>
+                    </div>
+                     <p class="text-center text-sm text-gray-500 mt-4">
+                        <span class="lang-content es">Distribución de talleres por disciplina.</span>
+                        <span class="lang-content en hidden">Workshop distribution by discipline.</span>
+                     </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section id="benefits" class="mt-16 md:mt-24 text-center">
+            <div class="lang-content es">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12">¿Por qué unirte a CRAFTIVIA?</h2>
+            </div>
+            <div class="lang-content en hidden">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12">Why join CRAFTIVIA?</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <p class="text-4xl mb-4">🚀</p>
+                    <h3 class="text-xl font-bold mb-2">
+                        <span class="lang-content es">Mayor Visibilidad</span>
+                        <span class="lang-content en hidden">Greater Visibility</span>
+                    </h3>
+                    <p class="text-gray-600">
+                        <span class="lang-content es">Llega a una audiencia de entusiastas creativos que buscan activamente clases y talleres en Barcelona.</span>
+                        <span class="lang-content en hidden">Reach an audience of creative enthusiasts actively looking for classes and workshops in Barcelona.</span>
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <p class="text-4xl mb-4">✅</p>
+                    <h3 class="text-xl font-bold mb-2">
+                        <span class="lang-content es">Plataforma Gratuita</span>
+                        <span class="lang-content en hidden">Free Platform</span>
+                    </h3>
+                    <p class="text-gray-600">
+                        <span class="lang-content es">Aumenta tu alcance y atrae nuevos alumnos sin ningún coste. Es una herramienta de marketing sin riesgo.</span>
+                        <span class="lang-content en hidden">Increase your reach and attract new students at no cost. It's a risk-free marketing tool.</span>
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <p class="text-4xl mb-4">💡</p>
+                    <h3 class="text-xl font-bold mb-2">
+                        <span class="lang-content es">Presentación Profesional</span>
+                        <span class="lang-content en hidden">Professional Presentation</span>
+                    </h3>
+                    <p class="text-gray-600">
+                        <span class="lang-content es">Muestra tu estudio con un perfil atractivo que incluye fotos, descripciones y un enlace directo a tu web.</span>
+                        <span class="lang-content en hidden">Showcase your studio with an attractive profile that includes photos, descriptions, and a direct link to your website.</span>
+                    </p>
+                </div>
+                 <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <p class="text-4xl mb-4">🤝</p>
+                    <h3 class="text-xl font-bold mb-2">
+                        <span class="lang-content es">Comunidad Creativa</span>
+                        <span class="lang-content en hidden">Creative Community</span>
+                    </h3>
+                    <p class="text-gray-600">
+                        <span class="lang-content es">Sé parte de una iniciativa que apoya y potencia la escena artística y musical local de Barcelona.</span>
+                        <span class="lang-content en hidden">Be part of an initiative that supports and enhances Barcelona's local art and music scene.</span>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How it Works Section -->
+        <section class="mt-16 md:mt-24 text-center">
+            <div class="lang-content es">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12">Así de fácil es empezar</h2>
+            </div>
+            <div class="lang-content en hidden">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12">It's that easy to get started</h2>
+            </div>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-0">
+                <div class="flex flex-col items-center p-4">
+                    <div class="bg-purple-600 text-white rounded-full h-16 w-16 flex items-center justify-center text-2xl font-bold">1</div>
+                    <h3 class="text-lg font-bold mt-4">
+                        <span class="lang-content es">Regístra tu info</span>
+                        <span class="lang-content en hidden">Register your info</span>
+                    </h3>
+                    <p class="text-gray-600 mt-2 max-w-xs">
+                        <span class="lang-content es">Rellena el formulario online en unos minutos con los datos de tu estudio y talleres.</span>
+                        <span class="lang-content en hidden">Fill out the online form in minutes with your studio and workshop details.</span>
+                    </p>
+                </div>
+                <div class="h-1 w-24 bg-gray-300 md:h-1 md:w-32 rotate-90 md:rotate-0"></div>
+                <div class="flex flex-col items-center p-4">
+                    <div class="bg-red-500 text-white rounded-full h-16 w-16 flex items-center justify-center text-2xl font-bold">2</div>
+                    <h3 class="text-lg font-bold mt-4">
+                        <span class="lang-content es">Lo publicamos</span>
+                        <span class="lang-content en hidden">We publish it</span>
+                    </h3>
+                    <p class="text-gray-600 mt-2 max-w-xs">
+                        <span class="lang-content es">Se crea un perfil profesional y atractivo para tu taller en la app.</span>
+                        <span class="lang-content en hidden">A professional and attractive profile for your workshop is created in the app.</span>
+                    </p>
+                </div>
+                <div class="h-1 w-24 bg-gray-300 md:h-1 md:w-32 rotate-90 md:rotate-0"></div>
+                <div class="flex flex-col items-center p-4">
+                    <div class="bg-amber-500 text-white rounded-full h-16 w-16 flex items-center justify-center text-2xl font-bold">3</div>
+                    <h3 class="text-lg font-bold mt-4">
+                        <span class="lang-content es">Recibe nuevos alumnos</span>
+                        <span class="lang-content en hidden">Receive new students</span>
+                    </h3>
+                    <p class="text-gray-600 mt-2 max-w-xs">
+                        <span class="lang-content es">Los usuarios te descubren, se interesan y contactan contigo a través de tu perfil en CRAFTIVIA.</span>
+                        <span class="lang-content en hidden">Users discover you, get interested, and contact you through your CRAFTIVIA profile.</span>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA Section -->
+        <section id="register" class="mt-16 md:mt-24 bg-white rounded-2xl p-8 md:p-12 text-center shadow-2xl">
+            <div class="lang-content es">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">¿Listo para que más gente descubra tu talento?</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">Únete a la red de talleres de CRAFTIVIA y empieza a conectar con tu próximo alumno. El registro es rápido, fácil y gratuito.</p>
+                <a href="https://forms.gle/reDrg6dt5W6PHaUd6" target="_blank" class="cta-button bg-purple-600 text-white font-bold py-3 px-8 rounded-full inline-block text-lg">
+                    Quiero aparecer en CRAFTIVIA
+                </a>
+            </div>
+            <div class="lang-content en hidden">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Ready for more people to discover your talent?</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">Join the CRAFTIVIA workshop network and start connecting with your next student. Registration is quick, easy, and free.</p>
+                <a href="https://forms.gle/reDrg6dt5W6PHaUd6" target="_blank" class="cta-button bg-purple-600 text-white font-bold py-3 px-8 rounded-full inline-block text-lg">
+                    I want to appear on CRAFTIVIA
+                </a>
+            </div>
+        </section>
+
+    </div>
+    
+    <footer class="text-center py-8 border-t border-gray-200">
+        <p>&copy; 2025 CRAFTIVIA. 
+            <span class="lang-content es">Impulsando la creatividad en Barcelona.</span>
+            <span class="lang-content en hidden">Empowering creativity in Barcelona.</span>
+        </p>
+    </footer>
+
+    <script>
+        const langToggleEs = document.getElementById('lang-es');
+        const langToggleEn = document.getElementById('lang-en');
+        const langContents = document.querySelectorAll('.lang-content');
+
+        // Function to set the language
+        function setLanguage(lang) {
+            localStorage.setItem('craftiviaInfographicLang', lang); // Save preference for this specific page
+            langContents.forEach(content => {
+                if (content.classList.contains(lang)) {
+                    content.classList.remove('hidden');
+                } else {
+                    content.classList.add('hidden');
+                }
+            });
+
+            // Update active button state
+            if (lang === 'es') {
+                langToggleEs.classList.add('active');
+                langToggleEn.classList.remove('active');
+            } else {
+                langToggleEn.classList.add('active');
+                langToggleEs.classList.remove('active');
+            }
+        }
+
+        // Load language preference on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('craftiviaInfographicLang') || 'es'; // Default to Spanish
+            setLanguage(savedLang);
+
+            // Initialize the app demo and chart
+            const sampleWorkshops = [
+                { id: 1, name: 'Taller de Torno Iniciación', name_en: 'Beginner Pottery Wheel Workshop', studio: 'El Racó de Fang', discipline: 'Cerámica', discipline_en: 'Ceramics', price: '45€', image: 'https://placehold.co/600x400/E9D5FF/4C1D95?text=Taller+de+Torno' },
+                { id: 2, name: 'Acuarela Botánica', name_en: 'Botanical Watercolor', studio: 'Pincellades', discipline: 'Pintura', discipline_en: 'Painting', price: '50€', image: 'https://placehold.co/600x400/D1FAE5/065F46?text=Acuarela' },
+                { id: 3, name: 'Iniciación a la Guitarra', name_en: 'Guitar for Beginners', studio: 'Acords BCN', discipline: 'Música', discipline_en: 'Music', price: '25€/clase', image: 'https://placehold.co/600x400/FEF3C7/92400E?text=Guitarra' },
+                { id: 4, name: 'Modelado de Joyas en Cera', name_en: 'Wax Jewelry Modeling', studio: 'Joia Estudio', discipline: 'Cerámica', discipline_en: 'Ceramics', price: '60€', image: 'https://placehold.co/600x400/FBCFE8/831843?text=Joyas+de+Cera' },
+                { id: 5, name: 'Canto Moderno Grupal', name_en: 'Group Modern Singing', studio: 'La Veu', discipline: 'Música', discipline_en: 'Music', price: '30€/clase', image: 'https://placehold.co/600x400/CFFAFE/1E40AF?text=Canto' },
+            ];
+
+            const workshopList = document.getElementById('workshop-list');
+            const filtersContainer = document.getElementById('filters');
+            const resultsCount = document.getElementById('results-count');
+            let activeDiscipline = 'Todos';
+            let chartInstance;
+
+            function renderWorkshops(workshops) {
+                workshopList.innerHTML = '';
+                if (workshops.length === 0) {
+                    workshopList.innerHTML = `
+                        <p class="text-center text-gray-500 p-4">
+                            <span class="lang-content es ${localStorage.getItem('craftiviaInfographicLang') === 'es' ? '' : 'hidden'}">No se encontraron talleres para esta disciplina.</span>
+                            <span class="lang-content en ${localStorage.getItem('craftiviaInfographicLang') === 'en' ? '' : 'hidden'}">No workshops found for this discipline.</span>
+                        </p>`;
+                    return;
+                }
+                workshops.forEach(workshop => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-gray-50 border border-gray-200 rounded-lg p-3 flex items-center gap-4';
+                    card.innerHTML = `
+                        <img src="${workshop.image}" alt="${workshop.name}" class="w-16 h-16 rounded-md object-cover">
+                        <div class="flex-grow">
+                            <h4 class="font-bold text-md">
+                                <span class="lang-content es ${localStorage.getItem('craftiviaInfographicLang') === 'es' ? '' : 'hidden'}">${workshop.name}</span>
+                                <span class="lang-content en ${localStorage.getItem('craftiviaInfographicLang') === 'en' ? '' : 'hidden'}">${workshop.name_en}</span>
+                            </h4>
+                            <p class="text-sm text-gray-600">${workshop.studio}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-bold text-purple-600">${workshop.price}</p>
+                            <span class="text-xs text-gray-400">
+                                <span class="lang-content es ${localStorage.getItem('craftiviaInfographicLang') === 'es' ? '' : 'hidden'}">${workshop.discipline}</span>
+                                <span class="lang-content en ${localStorage.getItem('craftiviaInfographicLang') === 'en' ? '' : 'hidden'}">${workshop.discipline_en}</span>
+                            </span>
+                        </div>
+                    `;
+                    workshopList.appendChild(card);
+                });
+            }
+
+            function updateResultsCount(count) {
+                const currentLang = localStorage.getItem('craftiviaInfographicLang') || 'es';
+                if (currentLang === 'es') {
+                    resultsCount.innerHTML = `Mostrando ${count} taller${count !== 1 ? 'es' : ''}`;
+                } else {
+                    resultsCount.innerHTML = `Showing ${count} workshop${count !== 1 ? 's' : ''}`;
+                }
+            }
+
+            function filterAndRender() {
+                const filteredWorkshops = activeDiscipline === 'Todos' 
+                    ? sampleWorkshops 
+                    : sampleWorkshops.filter(w => w.discipline === activeDiscipline);
+                
+                renderWorkshops(filteredWorkshops);
+                updateResultsCount(filteredWorkshops.length);
+                updateChart(filteredWorkshops);
+            }
+            
+            filtersContainer.addEventListener('click', e => {
+                if (e.target.classList.contains('filter-btn')) {
+                    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active-filter'));
+                    e.target.classList.add('active-filter');
+                    activeDiscipline = e.target.dataset.discipline;
+                    filterAndRender();
+                }
+            });
+
+            function updateChart(workshops) {
+                const disciplineCounts = workshops.reduce((acc, workshop) => {
+                    const disciplineName = localStorage.getItem('craftiviaInfographicLang') === 'es' ? workshop.discipline : workshop.discipline_en;
+                    acc[disciplineName] = (acc[disciplineName] || 0) + 1;
+                    return acc;
+                }, {});
+
+                const labels = Object.keys(disciplineCounts);
+                const data = Object.values(disciplineCounts);
+                
+                chartInstance.data.labels = labels.map(label => {
+                   if (label.length > 16) {
+                       const words = label.split(' ');
+                       const newLabel = [];
+                       let line = '';
+                       words.forEach(word => {
+                           if ((line + word).length > 16) {
+                               newLabel.push(line.trim());
+                               line = '';
+                           }
+                           line += word + ' ';
+                       });
+                       newLabel.push(line.trim());
+                       return newLabel;
+                   }
+                   return label;
+                });
+
+                chartInstance.data.datasets[0].data = data;
+                chartInstance.update();
+            }
+
+            function createChart() {
+                const ctx = document.getElementById('disciplineChart').getContext('2d');
+                chartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: 'Talleres',
+                            data: [],
+                            backgroundColor: [
+                                'rgba(139, 92, 246, 0.7)',
+                                'rgba(239, 68, 68, 0.7)',
+                                'rgba(245, 158, 11, 0.7)',
+                                'rgba(16, 185, 129, 0.7)',
+                                'rgba(59, 130, 246, 0.7)'
+                            ],
+                            borderColor: [
+                                'rgba(139, 92, 246, 1)',
+                                'rgba(239, 68, 68, 1)',
+                                'rgba(245, 158, 11, 1)',
+                                'rgba(16, 185, 129, 1)',
+                                'rgba(59, 130, 246, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    boxWidth: 12,
+                                    font: {
+                                        size: 12
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    title: function(tooltipItems) {
+                                        const item = tooltipItems[0];
+                                        let label = item.chart.data.labels[item.dataIndex];
+                                        if (Array.isArray(label)) {
+                                          return label.join(' ');
+                                        } else {
+                                          return label;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            createChart();
+            filterAndRender();
+
+            // Re-render workshops and chart when language changes
+            window.setLanguage = (lang) => {
+                localStorage.setItem('craftiviaInfographicLang', lang);
+                langContents.forEach(content => {
+                    if (content.classList.contains(lang)) {
+                        content.classList.remove('hidden');
+                    } else {
+                        content.classList.add('hidden');
+                    }
+                });
+                if (lang === 'es') {
+                    langToggleEs.classList.add('active');
+                    langToggleEn.classList.remove('active');
+                } else {
+                    langToggleEn.classList.add('active');
+                    langToggleEs.classList.remove('active');
+                }
+                // Update the app demo and chart with new language
+                filterAndRender(); 
+            };
+        });
+    </script>
+</body>
+</html>
