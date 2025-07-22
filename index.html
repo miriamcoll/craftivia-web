@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRAFTIVIA - Descubre tu Creatividad en Barcelona</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Tailwind: bg-slate-50 */
+        }
+        .gradient-bg {
+            background: linear-gradient(to right, #6366f1, #8b5cf6); /* Tailwind: from-indigo-500 to-purple-600 */
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white rounded-xl shadow-2xl p-8 md:p-12 max-w-lg w-full text-center border-t-4 border-indigo-600">
+        <h1 class="text-5xl font-bold text-gray-900 mb-6">CRAFTIVIA ✨</h1>
+        <p class="text-indigo-600 font-semibold mb-8 text-xl">
+            Tu puerta de entrada a la creatividad en Barcelona.
+        </p>
+
+        <img src="https://placehold.co/600x300/6366f1/ffffff?text=Bienvenido+a+CRAFTIVIA" alt="Imagen de bienvenida a CRAFTIVIA" class="rounded-lg mb-8 w-full h-auto object-cover shadow-md">
+
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 leading-tight">
+            ¿Qué te interesa hoy?
+        </h2>
+        <p class="text-gray-600 mb-10 text-lg">
+            Explora talleres, encuentra inspiración o únete a nuestra comunidad.
+        </p>
+
+        <div class="flex flex-col md:flex-row justify-center gap-6">
+            <a
+                href="/alumnos/"
+                class="gradient-bg text-white font-bold py-4 px-8 rounded-lg hover:opacity-90 transition duration-300 ease-in-out shadow-lg transform hover:scale-105 flex-1"
+            >
+                Soy Alumno/a 🎨
+            </a>
+            <a
+                href="/talleres/"
+                class="bg-purple-600 text-white font-bold py-4 px-8 rounded-lg hover:bg-purple-700 transition duration-300 ease-in-out shadow-lg transform hover:scale-105 flex-1"
+            >
+                Tengo un Taller 🧑‍🏫
+            </a>
+        </div>
+
+        <p class="text-gray-500 text-sm mt-12">
+            CRAFTIVIA es la forma más fácil de conectar con la creatividad en Barcelona.
+        </p>
+    </div>
+</body>
+</html>
