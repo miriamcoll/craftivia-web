@@ -60,6 +60,9 @@
             <p id="successMessage" class="mt-4 text-green-600 font-semibold hidden">
                 ¡Gracias por tu interés! Te avisaremos con las últimas novedades.
             </p>
+            <p id="errorMessage" class="mt-4 text-red-600 font-semibold hidden">
+                Hubo un error al registrar tu interés. Por favor, inténtalo de nuevo.
+            </p>
         </div>
 
         <!-- Sección de Enlace a la App en Construcción -->
@@ -91,35 +94,47 @@
 
             const email = document.getElementById('emailInput').value;
             const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
 
-            // Aquí es donde integrarías tu Google Form o cualquier otro servicio para guardar el email.
-            // Por ahora, solo mostraremos un mensaje de éxito.
+            // Oculta cualquier mensaje previo
+            successMessage.classList.add('hidden');
+            errorMessage.classList.add('hidden');
 
-            // Ejemplo de cómo podrías enviar a Google Forms (requiere un script de Apps Script o un servicio intermedio)
-            // const googleFormUrl = 'TU_URL_DEL_FORMULARIO_DE_GOOGLE_FORMS_AQUI';
-            // const formData = new FormData();
-            // formData.append('entry.123456789', email); // Reemplaza 'entry.123456789' con el ID de tu campo de email en Google Forms
-
-            // fetch(googleFormUrl, {
-            //     method: 'POST',
-            //     body: formData,
-            //     mode: 'no-cors' // Importante para evitar errores CORS con Google Forms
-            // }).then(() => {
-            //     successMessage.classList.remove('hidden');
-            //     document.getElementById('interestForm').reset();
-            // }).catch(error => {
-            //     console.error('Error al enviar el formulario:', error);
-            //     alert('Hubo un error al registrar tu interés. Por favor, inténtalo de nuevo.');
-            // });
-
-            // Simulación de éxito:
-            successMessage.classList.remove('hidden');
-            document.getElementById('interestForm').reset();
-            console.log('Email capturado (simulado):', email);
-
-            // Opcional: Deshabilitar el formulario después del envío
+            // Deshabilita el formulario mientras se envía
             document.getElementById('emailInput').disabled = true;
             document.querySelector('button[type="submit"]').disabled = true;
+
+            // *******************************************************************
+            // AQUÍ ES DONDE DEBES AÑADIR LA URL DE TU SCRIPT DE GOOGLE APPS SCRIPT
+            // *******************************************************************
+            const googleAppsScriptUrl = 'https://script.google.com/macros/s/AKfycbwMZorKeKxEJ0twaGt2_rOzsTqlL_g7BmwTvie0DtcPjSs7T5J5ofJcaIvL2lpBgoku/exec'; 
+            // Ejemplo: 'https://script.google.com/macros/s/AKfycby_YOUR_DEPLOYMENT_ID_HERE/exec';
+
+            // El 'entry.XXXXXXXXX' es el nombre del campo de tu formulario de Google Forms
+            // Debes obtenerlo inspeccionando el formulario de Google Forms publicado.
+            // Busca el atributo 'name' del campo de email en el HTML del formulario.
+            const formData = new FormData();
+            formData.append('entry.1016393227', email); // <-- REEMPLAZA 'entry.123456789' con el ID real de tu campo de email
+
+            fetch(googleAppsScriptUrl, {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors' // Importante para evitar errores CORS con Google Forms
+            })
+            .then(() => {
+                successMessage.classList.remove('hidden');
+                document.getElementById('interestForm').reset();
+                console.log('Email enviado con éxito a Google Forms.');
+            })
+            .catch(error => {
+                errorMessage.classList.remove('hidden');
+                console.error('Error al enviar el formulario:', error);
+            })
+            .finally(() => {
+                // Vuelve a habilitar el formulario después del envío (éxito o error)
+                document.getElementById('emailInput').disabled = false;
+                document.querySelector('button[type="submit"]').disabled = false;
+            });
         });
     </script>
 </body>
